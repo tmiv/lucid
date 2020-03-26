@@ -37,10 +37,6 @@ setup(
     ),
     author="The Lucid Authors",
     author_email="deepviz@google.com",
-    url="https://github.com/tensorflow/lucid",
-    download_url=(
-        "https://github.com/tensorflow/lucid" "/archive/v{}.tar.gz".format(version)
-    ),
     license="Apache License 2.0",
     keywords=[
         "tensorflow",
