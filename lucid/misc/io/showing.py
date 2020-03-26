@@ -184,7 +184,7 @@ def textured_mesh(mesh, texture, background='0xffffff'):
 
   code = Template('''
   <input id="unfoldBox" type="checkbox" class="control">Unfold</input>
-  <input id="shadeBox" type="checkbox" class="control">Shade</input>
+  <input id="shadeBox" type="checkbox" class="control" checked>Shade</input>
 
   <script src="https://cdn.rawgit.com/mrdoob/three.js/r89/build/three.min.js"></script>
   <script src="https://cdn.rawgit.com/mrdoob/three.js/r89/examples/js/controls/OrbitControls.js"></script>
