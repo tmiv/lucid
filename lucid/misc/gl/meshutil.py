@@ -152,7 +152,7 @@ def load_obj(fn, position_override=None, normal_override=None, uv_override=None)
   if np.any(pos_idx):
     if not position_override is None:
         assert len(position) == len(position_override)+1, "Override position length must match"
-    poisiton[1:] = position_override
+    position[1:] = position_override
     outputs['position'] = _unify_rows(position)[pos_idx]
   if np.any(uv_idx):
     if not uv_override is None:
