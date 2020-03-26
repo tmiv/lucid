@@ -96,7 +96,7 @@ def _unify_rows(a):
   return out
 
 
-def load_obj(fn):
+def load_obj(fn, position_override=None, normal_override=None, uv_override=None):
   """Load 3d mesh form .obj' file.
   
   Args:
@@ -150,10 +150,19 @@ def load_obj(fn):
   outputs['face'] = np.int32(trinagle_indices)
   pos_idx, uv_idx, normal_idx = np.int32(list(tuple2idx)).T
   if np.any(pos_idx):
+    if not position_override is None:
+        assert len(position) == len(position_override)+1, "Override position length must match"
+	poisiton[1:] = position_override
     outputs['position'] = _unify_rows(position)[pos_idx]
   if np.any(uv_idx):
+    if not uv_override is None:
+        assert len(uv) == len(uv_override)+1, "Override uv length must match"
+	uv[1:] = uv_override
     outputs['uv'] = _unify_rows(uv)[uv_idx]
   if np.any(normal_idx):
+    if not normal_override is None:
+        assert len(normal) == len(normal_override)+1, "Override normal length must match"
+	normal[1:] = normal_override
     outputs['normal'] = _unify_rows(normal)[normal_idx]
   return outputs
 
