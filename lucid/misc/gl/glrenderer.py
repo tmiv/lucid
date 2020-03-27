@@ -150,6 +150,6 @@ class MeshRenderer(object):
       frame = frame.reshape(h, w, 4)  # fix PyOpenGL bug
       frame = frame[::-1]  # verical flip to match GL convention
       depth = gl.glReadPixels(0, 0, w, h, gl.GL_DEPTH_COMPONENT, gl.GL_FLOAT)
-      depth = frame.reshape(h, w, 4)  # fix PyOpenGL bug
+      depth = depth.reshape(h, w, 1)  # fix PyOpenGL bug
       depth = depth[::-1]  # verical flip to match GL convention
       return frame, depth
