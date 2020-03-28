@@ -167,15 +167,16 @@ def load_obj(fn, position_override=None, normal_override=None, uv_override=None)
   return outputs
 
 def face_normals( mesh ):
-    face_verts = mesh['position'][np.reshape(mesh['face'],[-1,3])]
-    edge_A = face_verts[:,:,1] - face_verts[:,:,0]
-    edge_B = face_verts[:,:,2] - face_verts[:,:,0]
+    tri_vert_idxs = np.reshape(mesh['face'],[-1,3])
+    face_verts = mesh['position'][tri_vert_idxs]
+    edge_A = face_verts[:,1,:] - face_verts[:,0,:]
+    edge_B = face_verts[:,2,:] - face_verts[:,0,:]
     norm = np.cross(edge_A,edge_B)
     norm = norm / np.linalg.norm(norm, axis=-1,keepdims=True)
     return norm
 
 def recalc_vert_normals( mesh ):
-    face_norms = face_normals( mesh )
+    face_norms = FaceNormals( mesh )
     face_vert_map = np.reshape(mesh['face'],[-1,3])
     vert_face_map = [np.concatenate( [np.where(face_vert_map[:,0] == v),
                                       np.where(face_vert_map[:,1] == v),
