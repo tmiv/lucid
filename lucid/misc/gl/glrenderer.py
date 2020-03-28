@@ -124,7 +124,7 @@ class MeshRenderer(object):
   def proj_matrix(self):
     return perspective(self.fovy, self.aspect, self.znear, self.zfar)
     
-  def render_mesh(self, position, uv, face=None,
+  def render_mesh(self, position, uv, normal, face=None,
                   clear_color=[0, 0, 0, 0],
                   modelview=np.eye(4)):
     MVP = modelview.T.dot(self.proj_matrix())
@@ -134,7 +134,7 @@ class MeshRenderer(object):
       gl.glClearColor(*clear_color)
       gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
       
-      with self.shader, self._bind_attrib(0, position), self._bind_attrib(1, uv):
+      with self.shader, self._bind_attrib(0, position), self._bind_attrib(1, uv), self._bind_attrib(2, normal):
         gl.glUniformMatrix4fv(self.shader['MVP'], 1, gl.GL_FALSE, MVP)
         gl.glEnable(gl.GL_DEPTH_TEST)
         if face is not None:
