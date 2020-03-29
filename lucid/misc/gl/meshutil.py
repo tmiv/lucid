@@ -176,7 +176,7 @@ def face_normals( mesh ):
     return norm
 
 def recalc_vert_normals( mesh ):
-    face_norms = FaceNormals( mesh )
+    face_norms = face_normals( mesh )
     face_vert_map = np.reshape(mesh['face'],[-1,3])
     vert_face_map = [np.concatenate( [np.where(face_vert_map[:,0] == v),
                                       np.where(face_vert_map[:,1] == v),
