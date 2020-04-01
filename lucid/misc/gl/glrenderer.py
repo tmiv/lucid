@@ -126,6 +126,7 @@ class MeshRenderer(object):
     
   def render_mesh(self, position, uv, normal, face=None,
                   clear_color=[0, 0, 0, 0],
+                  texture=None,
                   modelview=np.eye(4)):
     MVP = modelview.T.dot(self.proj_matrix())
     MVP = np.ascontiguousarray(MVP, np.float32)
@@ -136,6 +137,10 @@ class MeshRenderer(object):
       
       with self.shader, self._bind_attrib(0, position), self._bind_attrib(1, uv), self._bind_attrib(2, normal):
         gl.glUniformMatrix4fv(self.shader['MVP'], 1, gl.GL_FALSE, MVP)
+        if not texture is None:
+            gl.glUniform1i(self.shader['texture1'], 0)
+            gl.glActiveTexture(gl.GL_TEXTURE0 + 0)
+            gl.glBindTexture(gl.GL_TEXTURE_2D, texture)
         gl.glEnable(gl.GL_DEPTH_TEST)
         if face is not None:
           face = np.ascontiguousarray(face, np.uint32)
@@ -144,6 +149,8 @@ class MeshRenderer(object):
           vert_n = position.size//position.shape[-1]
           gl.glDrawArrays(gl.GL_TRIANGLES, 0, vert_n)
         gl.glDisable(gl.GL_DEPTH_TEST)
+        if not texture is None:
+            gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
       
       w, h = self.size
       frame = gl.glReadPixels(0, 0, w, h, gl.GL_RGBA, gl.GL_FLOAT)
