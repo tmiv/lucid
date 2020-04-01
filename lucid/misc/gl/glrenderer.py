@@ -148,10 +148,10 @@ class MeshRenderer(object):
       with self.shader, self._bind_attrib(0, position), self._bind_attrib(1, uv), self._bind_attrib(2, normal):
         gl.glUniformMatrix4fv(self.shader['MVP'], 1, gl.GL_FALSE, MVP)
         if not texture is None:
-            texture.push_tex()
             gl.glUniform1i(self.shader['texture1'], 0)
             gl.glActiveTexture(gl.GL_TEXTURE0 + 0)
             gl.glBindTexture(gl.GL_TEXTURE_2D, texture)
+            texture.push_tex()
         gl.glEnable(gl.GL_DEPTH_TEST)
         if face is not None:
           face = np.ascontiguousarray(face, np.uint32)
