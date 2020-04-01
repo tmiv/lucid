@@ -40,7 +40,7 @@ class TextureImage(Texture):
         self.h = h
         self.data = np.ascontiguousarray(data, np.uint8)
         
-     def push_tex(self):
+    def push_tex(self):
         gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, self.w, self.h, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, self.data)
         gl.glGenerateMipmap(gl.GL_TEXTURE_2D)
         
