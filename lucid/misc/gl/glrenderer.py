@@ -33,7 +33,17 @@ class Texture(GLObject):
   def release(self):
     gl.glDeleteTextures([self._as_parameter_])
     
-
+class TextureImage(Texture):
+    def __init__(self, w, h, data):
+        super().__init__()
+        self.w = w
+        self.h = h
+        self.data = np.ascontiguousarray(data, np.uint8)
+        
+     def push_tex(self):
+        gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, self.w, self.h, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, self.data)
+        gl.glGenerateMipmap(gl.GL_TEXTURE_2D)
+        
 class Shader(GLObject):
 
   def __init__(self, vp_code, fp_code):
@@ -138,6 +148,7 @@ class MeshRenderer(object):
       with self.shader, self._bind_attrib(0, position), self._bind_attrib(1, uv), self._bind_attrib(2, normal):
         gl.glUniformMatrix4fv(self.shader['MVP'], 1, gl.GL_FALSE, MVP)
         if not texture is None:
+            texture.push_tex()
             gl.glUniform1i(self.shader['texture1'], 0)
             gl.glActiveTexture(gl.GL_TEXTURE0 + 0)
             gl.glBindTexture(gl.GL_TEXTURE_2D, texture)
