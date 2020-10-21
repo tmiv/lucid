@@ -141,7 +141,6 @@ class MeshRenderer(object):
                   modelview=np.eye(4)):
     MVP = modelview.T.dot(self.proj_matrix())
     MVP = np.ascontiguousarray(MVP, np.float32)
-    print(modelview)
     MV = np.ascontiguousarray(modelview, np.float32)
     position = np.ascontiguousarray(position, np.float32)
     with self.fbo:
