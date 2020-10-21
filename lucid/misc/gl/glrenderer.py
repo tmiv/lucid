@@ -98,6 +98,7 @@ class MeshRenderer(object):
     self.shader = Shader(vp_code='''
       #version 130
       uniform mat4 MVP;
+      uniform mat4 MV;
       in vec4 data;
       out vec4 aData;
 
@@ -140,6 +141,7 @@ class MeshRenderer(object):
                   modelview=np.eye(4)):
     MVP = modelview.T.dot(self.proj_matrix())
     MVP = np.ascontiguousarray(MVP, np.float32)
+    MV = np.ascontiguousarray(modelview.T, np.float32)
     position = np.ascontiguousarray(position, np.float32)
     with self.fbo:
       gl.glClearColor(*clear_color)
@@ -147,6 +149,7 @@ class MeshRenderer(object):
       
       with self.shader, self._bind_attrib(0, position), self._bind_attrib(1, uv), self._bind_attrib(2, normal):
         gl.glUniformMatrix4fv(self.shader['MVP'], 1, gl.GL_FALSE, MVP)
+        gl.glUniformMatrix4fv(self.shader['MV'], 1, gl.GL_FALSE, MV)
         if not texture is None:
             gl.glUniform1i(self.shader['texture1'], 0)
             gl.glActiveTexture(gl.GL_TEXTURE0 + 0)
